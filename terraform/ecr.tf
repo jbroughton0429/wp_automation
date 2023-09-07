@@ -9,3 +9,12 @@ resource "aws_ecr_repository" "wordpress" {
   }
 }
 
+resource "local_file" "ecr_arn" {
+  content = aws_ecr_repository.wordpress.arn
+  filename = "./files/acr_arn"
+}
+
+resource "local_file" "ecr_url" {
+  content = aws_ecr_repository.wordpress.repository_url
+filename = "./files/ecr_url"
+}

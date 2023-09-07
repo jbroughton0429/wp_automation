@@ -19,5 +19,5 @@ resource "aws_db_instance" "wordpress" {
 
 resource "local_file" "dbhost" {
   content = aws_db_instance.wordpress.address
-  filename = "database_host"
+  filename = "/files/database_host"
 }
