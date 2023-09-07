@@ -53,11 +53,11 @@ resource "aws_ecs_task_definition" "wordpress" {
                     },
                     {
                         name  = "WORDPRESS_DB_PASSWORD"
-                        value = "Radio04Down!"
+                        value = var.db_password
                     },
                     {
                         name  = "WORDPRESS_DB_USER"
-                        value = "kenny"
+                        value = var.db_user
                     },
                 ]
                 essential        = true
