@@ -4,7 +4,6 @@ variable "project" {
 
 variable "environment" {
   description = "The deployment environment"
-  default     = "production"
 }
 
 variable "region" {

@@ -1,18 +1,11 @@
-provider "aws" {
-  region = "eu-central-1"
-  }
 
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "5.15.0"
-    }
-  }
-}
+#resource "aws_kms_key" "wordpress" {
+#  description = "RDS Key for Wordpress"
+#}
 
-resource "aws_kms_key" "wordpress" {
-  description = "RDS Key for Wordpress"
+import {
+  to = aws_db_instance.wordpress
+  id = "wordpress"
 }
 
 resource "aws_db_instance" "wordpress" {
@@ -31,5 +24,5 @@ resource "aws_db_instance" "wordpress" {
 
 resource "local_file" "dbhost" {
   content = aws_db_instance.wordpress.address
-  filename = "database_host.txt"
+  filename = "database_host"
 }
