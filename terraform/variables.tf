@@ -32,3 +32,16 @@ variable "private_subnets_cidr" {
 variable "app_count" {
   description = "ECS AppCount"
 }
+
+variable "db_password" {
+  description = "Database Administrator Password"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_user" {
+  description = "Database User"
+  type        = string
+}
+
+

@@ -3,7 +3,7 @@
 #MySQL Settings
 mysql_db: "wordpress"
   #mysql_host: "wordpress.cvhvc4hps62f.eu-central-1.rds.amazonaws.com"
-mysql_host: "{{ lookup('file', /tmp/database_host) }}"
+mysql_host: "{{ lookup('file', '/tmp/database_host') }}"
 #HTTP Settings
 http_host: "wordpress"
 http_conf: "wordpress.conf"

@@ -2,7 +2,6 @@
 
 // Set Variables for Packer Build
 
-
 variable "image" {
   type = string
   default = "ubuntu:focal"

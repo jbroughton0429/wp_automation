@@ -1,11 +1,20 @@
 packer {
   required_plugins {
     docker = {
-      version = ">= 0.0.7"
       source  = "github.com/hashicorp/docker"
+      version = "~> 1"
+    }
+    ansible = {
+      source  = "github.com/hashicorp/ansible"
+      version = "~> 1"
     }
   }
 }
+
+locals {
+  filepath = "/home/jayson/test"
+}
+
 
 source "docker" "ubuntu" {
   image   = var.image
@@ -34,19 +43,19 @@ build {
     }
 
     provisioner "file" {
-      source      = "/home/ubuntu/test/vault-password"
+      source      = "${local.filepath}/vault-password"
       destination = "/tmp/vault-password"
     }
 
     provisioner "file" {
-      source       = "../terraform/database_host"
+      source       = "../terraform/files/database_host"
       destination  = "/tmp/database_host"
     }
 
     provisioner "ansible-local" {
-      group_vars        = "/home/ubuntu/wp_automation/ansible/vars/"
-      playbook_dir      = "/home/ubuntu/wp_automation/ansible"
-      playbook_file     = "/home/ubuntu/wp_automation/ansible/playbook.yml"
+      group_vars        = "${local.filepath}/wp_automation/ansible/vars"
+      playbook_dir      = "${local.filepath}/wp_automation/ansible"
+      playbook_file     = "${local.filepath}/wp_automation/ansible/playbook.yml"
       staging_directory = "/tmp/ansible"
       extra_arguments   = ["--vault-password-file=/tmp/vault-password"]
     }
@@ -55,7 +64,6 @@ build {
  
     post-processor "docker-tag" {
       repository = var.repo
-#      repository = "913293700147.dkr.ecr.eu-central-1.amazonaws.com/wordpress"
       tags       = ["latest"]
     }
 
@@ -63,7 +71,6 @@ build {
       ecr_login = true
       aws_profile = "default"
       login_server = var.login_server      
-#login_server = "https://913293700147.dkr.ecr.eu-central-1.amazonaws.com/wordpress"
   }
  }
 }
