@@ -46,4 +46,5 @@ Done:
 ### Terraform
 1. Move locals out of networking module
 2. Use the vars from main in verbose tags in networking (post-locals replaces)
+3. Import ecsTaskExecutionRole and flesh out
 

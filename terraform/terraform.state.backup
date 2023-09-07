@@ -1,7 +1,7 @@
 {
   "version": 4,
   "terraform_version": "1.5.6",
-  "serial": 22,
+  "serial": 32,
   "lineage": "8923d938-ee6c-0965-1294-582c25366194",
   "outputs": {
     "arn": {
@@ -30,7 +30,7 @@
             "address": "wordpress.cvhvc4hps62f.eu-central-1.rds.amazonaws.com",
             "allocated_storage": 20,
             "allow_major_version_upgrade": null,
-            "apply_immediately": null,
+            "apply_immediately": false,
             "arn": "arn:aws:rds:eu-central-1:913293700147:db:wordpress",
             "auto_minor_version_upgrade": true,
             "availability_zone": "eu-central-1c",
@@ -78,7 +78,7 @@
             "network_type": "IPV4",
             "option_group_name": "default:mysql-5-7",
             "parameter_group_name": "default.mysql5.7",
-            "password": null,
+            "password": "Radio04Down!",
             "performance_insights_enabled": false,
             "performance_insights_kms_key_id": "",
             "performance_insights_retention_period": 0,
@@ -159,6 +159,199 @@
           },
           "sensitive_attributes": [],
           "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiZGVsZXRlIjoxMjAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIwIn0="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_ecs_cluster",
+      "name": "stateless",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ecs:eu-central-1:913293700147:cluster/wordpress",
+            "configuration": [],
+            "id": "arn:aws:ecs:eu-central-1:913293700147:cluster/wordpress",
+            "name": "wordpress",
+            "service_connect_defaults": [],
+            "setting": [
+              {
+                "name": "containerInsights",
+                "value": "disabled"
+              }
+            ],
+            "tags": {
+              "Application": "Wordpress",
+              "Environment": "Dev",
+              "Managed-by": "Terraform"
+            },
+            "tags_all": {
+              "Application": "Wordpress",
+              "Environment": "Dev",
+              "Managed-by": "Terraform"
+            }
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_ecs_service",
+      "name": "wordpress",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "alarms": [],
+            "capacity_provider_strategy": [
+              {
+                "base": 0,
+                "capacity_provider": "FARGATE",
+                "weight": 1
+              }
+            ],
+            "cluster": "arn:aws:ecs:eu-central-1:913293700147:cluster/wordpress",
+            "deployment_circuit_breaker": [
+              {
+                "enable": true,
+                "rollback": true
+              }
+            ],
+            "deployment_controller": [
+              {
+                "type": "ECS"
+              }
+            ],
+            "deployment_maximum_percent": 200,
+            "deployment_minimum_healthy_percent": 100,
+            "desired_count": 0,
+            "enable_ecs_managed_tags": true,
+            "enable_execute_command": false,
+            "force_new_deployment": null,
+            "health_check_grace_period_seconds": 0,
+            "iam_role": "/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+            "id": "arn:aws:ecs:eu-central-1:913293700147:service/wordpress/blah-2",
+            "launch_type": "",
+            "load_balancer": [],
+            "name": "blah-2",
+            "network_configuration": [
+              {
+                "assign_public_ip": true,
+                "security_groups": [
+                  "sg-d6b0bbb7"
+                ],
+                "subnets": [
+                  "subnet-0310154e",
+                  "subnet-0d182e70",
+                  "subnet-5faf5435"
+                ]
+              }
+            ],
+            "ordered_placement_strategy": [],
+            "placement_constraints": [],
+            "platform_version": "LATEST",
+            "propagate_tags": "NONE",
+            "scheduling_strategy": "REPLICA",
+            "service_connect_configuration": [],
+            "service_registries": [],
+            "tags": {},
+            "tags_all": {},
+            "task_definition": "wordpress-2:1",
+            "timeouts": null,
+            "triggers": {},
+            "wait_for_steady_state": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMCJ9"
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_ecs_task_definition",
+      "name": "wordpress",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ecs:eu-central-1:913293700147:task-definition/wordpress-2:2",
+            "arn_without_revision": "arn:aws:ecs:eu-central-1:913293700147:task-definition/wordpress-2",
+            "container_definitions": "[{\"cpu\":0,\"environment\":[{\"name\":\"WORDPRESS_DB_HOST\",\"value\":\"wordpress.cvhvc4hps62f.eu-central-1.rds.amazonaws.com\"},{\"name\":\"WORDPRESS_DB_NAME\",\"value\":\"wordpress\"},{\"name\":\"WORDPRESS_DB_PASSWORD\",\"value\":\"Radio04Down!\"},{\"name\":\"WORDPRESS_DB_USER\",\"value\":\"kenny\"}],\"essential\":true,\"image\":\"913293700147.dkr.ecr.eu-central-1.amazonaws.com/wordpress:latest\",\"mountPoints\":[],\"name\":\"wordpress\",\"portMappings\":[{\"appProtocol\":\"http\",\"containerPort\":80,\"hostPort\":80,\"name\":\"wordpress-80-tcp\",\"protocol\":\"tcp\"}],\"volumesFrom\":[]}]",
+            "cpu": "512",
+            "ephemeral_storage": [],
+            "execution_role_arn": "arn:aws:iam::913293700147:role/ecsTaskExecutionRole",
+            "family": "wordpress-2",
+            "id": "wordpress-2",
+            "inference_accelerator": [],
+            "ipc_mode": "",
+            "memory": "1024",
+            "network_mode": "awsvpc",
+            "pid_mode": "",
+            "placement_constraints": [],
+            "proxy_configuration": [],
+            "requires_compatibilities": [
+              "FARGATE"
+            ],
+            "revision": 2,
+            "runtime_platform": [
+              {
+                "cpu_architecture": "X86_64",
+                "operating_system_family": "LINUX"
+              }
+            ],
+            "skip_destroy": false,
+            "tags": {
+              "Application": "Wordpress",
+              "Environment": "Dev",
+              "Managed-by": "Terraform"
+            },
+            "tags_all": {
+              "Application": "Wordpress",
+              "Environment": "Dev",
+              "Managed-by": "Terraform"
+            },
+            "task_role_arn": "arn:aws:iam::913293700147:role/ecsTaskExecutionRole",
+            "volume": []
+          },
+          "sensitive_attributes": [],
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "local_file",
+      "name": "dbhost",
+      "provider": "provider[\"registry.terraform.io/hashicorp/local\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "content": "wordpress.cvhvc4hps62f.eu-central-1.rds.amazonaws.com",
+            "content_base64": null,
+            "content_base64sha256": "Qz3BDBfSNGcJS5vSjtCJ61KY6w6PpSXhAO8jA5CcTao=",
+            "content_base64sha512": "gRFhxyYcDq+vN18xfcQA/6+Mh4hgWBTqvziZMfZ7Uv+qGbIS5GYjLB9JfvaMjlr+gqFSOYmWB1xEGoGf2chN4Q==",
+            "content_md5": "080ea2f50bcc162b79e617c852014d13",
+            "content_sha1": "a908ac933857eab79d405a60fcc76be4e4b8e56a",
+            "content_sha256": "433dc10c17d23467094b9bd28ed089eb5298eb0e8fa525e100ef2303909c4daa",
+            "content_sha512": "811161c7261c0eafaf375f317dc400ffaf8c8788605814eabf389931f67b52ffaa19b212e466232c1f497ef68c8e5afe82a152398996075c441a819fd9c84de1",
+            "directory_permission": "0777",
+            "file_permission": "0777",
+            "filename": "database_host",
+            "id": "a908ac933857eab79d405a60fcc76be4e4b8e56a",
+            "sensitive_content": null,
+            "source": null
+          },
+          "sensitive_attributes": [],
+          "dependencies": [
+            "aws_db_instance.wordpress"
+          ]
         }
       ]
     },
@@ -595,7 +788,7 @@
                 "cidr_blocks": [
                   "0.0.0.0/0"
                 ],
-                "description": null,
+                "description": "",
                 "from_port": 22,
                 "ipv6_cidr_blocks": [
                   "::/0"

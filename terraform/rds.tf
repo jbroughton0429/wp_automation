@@ -3,11 +3,6 @@
 #  description = "RDS Key for Wordpress"
 #}
 
-import {
-  to = aws_db_instance.wordpress
-  id = "wordpress"
-}
-
 resource "aws_db_instance" "wordpress" {
   allocated_storage             =  20
   identifier			= "wordpress"
