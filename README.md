@@ -10,6 +10,12 @@
     + [Packer](#packer)
 - [Installation](#installation)
   * [Validating Installation](#validating-installation)
+    
+- [Approach and Execution](#approach-and-execution)
+  * [Deploy and Interaction](#deploy-and-interaction)
+  * [Problems ](#problems)
+  * [HA/Automated](#haautomated)
+  * [Improvements](#improvements)
 
 ## Introduction
 
@@ -134,3 +140,54 @@ terraform apply
 ## Validating Installation
 
 When you have completed the run of `Terraform`, you should be able to navigate to the ECS Console and Identify the Hostname for your wordpress installation
+
+
+## Approach and Execution
+The initial task for this challenge was as follows:
+Use Tools such as Terraform, Packer, and Ansible
+Setup a WordPress container on an ECS Cluster
+
+I approached this scenario by identifying the initial challenge: Automate the build of an ECS Cluster.
+
+Breaking this down into bite-size chunks:
+Automate the build-out of the AWS Infrastructure
+VPC & Networking
+ECR
+RDS
+ECS
+Build a Docker Compose setup of WP and MariaDB via Ansible to see how they interact locally
+Use Packer to auto-build and deploy the image locally, and then ECR
+Clean up secrets, and variables and flesh out the project
+
+### Deploy & Interaction
+The way this is deployed is as follows:
+ECR is deployed via Terraform's ``target`` flag
+Execution of packer does the following: 
+Build out Ansible image of WordPress
+Push to ECR
+Execution of `terraform apply` will run the following:
+Build the Network out
+Setup RDS with the supplied information
+Deploy an ECS Cluster with Service/Task of WordPress
+
+The ECS Cluster communicates to the RDS Instance in AWS. Building out of the image:latest triggers the Task to update
+
+### Problems 
+I created a `TODO.md` file that outlines the current issues, and how to tackle them.  I would say the main issue I had was refreshing my memory on Ansible/Packer as it had been several years since I've worked with this software.  
+My first attempt was to use an existing AMI via Packer and build with Ansible and Push. I ran into issues here as the AMI was not a 'docker build' and ECR refused to push this 
+Remediated by building through docker on the local machine and pushing
+I ran into issues with Ansible deployment strategies and ended up locating a playbook that needed some heavy modification instead of re-creating the wheel. This cut down deployment time dramatically
+I have no experience with ECS. Before ECS, we would deploy our Docker Images, set up Load Balancing, and the pre-ecs days of clustering the containers. 
+My approach to this was to take the generated image in ECR and create an ECS Cluster/Service/Task Definition manually. Once I could connect to the Database, I used `terraform import` to review and build out my `ecs.tf`.
+
+One of the items that still needs to be completed is to create the IAM Role that I manually deployed. This is in my TODO as I ran out of time to complete this.
+
+### HA/Automated
+This is somewhat designed to be automated for deployment. A `bash` script is identified in this README on how to automate the deployment. One of the issues still to be tackled is a few hardcoded variables. Once this is identified and remediated, a deployment via either TF Cloud or CI/CD with a Terraform plugin should be able to deploy this as necessary
+
+For High Availability, as you may have discovered, I did not HA the RDS Database, or set up Load Balancers in the Cluster as this was a quick deployment.  In the future, I would:
+Build our RDS Instance as multi-az as a first step. Also, set backups and test backup solutions through RDS.  We could get super complicated with Database HA, standby instances, etc
+I would Have more than 1 task running at the same time for ECS, setup spread placement via 3 az's, and EC2 Auto Scaling to begin with
+
+### Improvements
+If this was a large deployment, I would look into EKS for Kubernetes deployments.  Setting up Helm Charts, using Waypoint for management, and being able to utilize the TF Cloud infrastructure for deployment strategies involving more than 1 party would make things run a little smoother. Ansible Deployments, Packer building, etc. introduces many 3rd party building/deployment products that have the potential to break on upgrades.  
